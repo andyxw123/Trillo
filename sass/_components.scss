@@ -1,6 +1,7 @@
 //== LOGO ==============//
 .logo {
   height: 3.25rem;
+  margin-left: 2rem;
 }
 
 //== BUTTONS =============//
@@ -15,16 +16,41 @@
     border-bottom: 1px solid currentColor;
     padding-bottom: 0.2rem;
     cursor: pointer;
-    transition: all .1s;
+    transition: all 0.1s;
+
+    & span {
+      margin-left: 0.5rem;
+      transition: margin-left 0.2s;
+    }
 
     &:focus {
       outline: none;
     }
 
     &:hover {
+      -webkit-animation: pulsate 1s cubic-bezier(0.83, 0, 0.17, 1) infinite;
       animation: pulsate 1s cubic-bezier(0.83, 0, 0.17, 1) infinite;
       color: $color-grey-dark-1;
+
+      span {
+        margin-left: 1rem;
+      }
     }
+  }
+}
+
+@-webkit-keyframes pulsate {
+  0% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 1rem 4rem rgba($color-black, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: none;
   }
 }
 
@@ -35,12 +61,11 @@
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 1rem 4rem rgba($color-black, .5);
+    box-shadow: 0 1rem 4rem rgba($color-black, 0.5);
   }
   100% {
     transform: scale(1);
     box-shadow: none;
-
   }
 }
 
@@ -67,6 +92,26 @@
       outline: none;
       width: 100%;
       background-color: $color-grey-light-3;
+    }
+
+    &::-webkit-input-placeholder {
+      font-weight: 100;
+      color: $color-grey-light-4;
+    }
+
+    &::-moz-placeholder {
+      font-weight: 100;
+      color: $color-grey-light-4;
+    }
+
+    &:-ms-input-placeholder {
+      font-weight: 100;
+      color: $color-grey-light-4;
+    }
+
+    &::-ms-input-placeholder {
+      font-weight: 100;
+      color: $color-grey-light-4;
     }
 
     &::placeholder {
@@ -108,10 +153,7 @@
 
   & > * {
     //Apply padding to all the direct children
-    &:not(:last-child) {
-      padding: 0 2rem;
-    }
-
+    padding: 0 1rem;
     cursor: pointer;
 
     //The items are stretched vertically so need to center
@@ -122,9 +164,6 @@
 
   & > *:hover {
     background-color: $color-grey-light-2;
-  }
-
-  &__icon-box {
   }
 
   &__icon {
@@ -154,7 +193,7 @@
   &__user-photo {
     height: 3.75rem;
     border-radius: 50%;
-    margin-right: 0.5rem;
+    margin-right: 1rem;
   }
 }
 
@@ -232,7 +271,7 @@
   text-align: center;
 }
 
-//== LEGAL ==============//
+//== GALLERY ==============//
 
 .gallery {
   display: flex;
@@ -248,7 +287,7 @@
 .overview {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid $color-grey-light-4;
+  border-bottom: $border-line;
 
   & > * {
     padding: 1rem;
@@ -277,7 +316,7 @@
   }
 
   &__icon-location {
-    margin-right: .3rem;
+    margin-right: 0.3rem;
   }
 
   &__rating {
@@ -299,9 +338,268 @@
       text-align: center;
     }
   }
+}
 
-  //DETAILS
-  &__details {
-    background-color: $color-grey-light-2;
+//== PARAGRAPH ==============//
+
+.paragraph:not(:last-of-type) {
+  margin-bottom: 2rem;
+}
+
+.list {
+  list-style: none;
+  margin: 3rem 0;
+  padding: 3rem 0;
+  border-top: $border-line;
+  border-bottom: $border-line;
+
+  display: flex;
+  flex-flow: wrap;
+
+  &__item {
+    // Display: flex to avoid text wrapping under the bullet
+    display: flex;
+    flex: 0 0 50%;
+    margin-bottom: 0.7rem;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      margin: 0.7rem;
+
+      // Older browsers (but can't set image color)
+      background-image: url(../img/SVG/chevron-thin-right.svg);
+      background-size: cover;
+
+      // Newer browsers - set a background color and use the sprite
+      // as a mask
+      @supports (-webkit-mask-image: url()) or (mask-image: url()) {
+        background-image: none;
+        background-color: $color-primary;
+        -webkit-mask-image: url(../img/SVG/chevron-thin-right.svg);
+        mask-image: url(../img/SVG/chevron-thin-right.svg);
+        -webkit-mask-size: cover;
+        mask-size: cover;
+      }
+    }
   }
 }
+
+.recommend {
+  font-size: 1.3rem;
+  color: $color-grey-dark-3;
+
+  display: flex;
+  align-items: center;
+
+  &__count {
+    flex: 1;
+    margin-right: auto;
+    padding-right: 1rem;
+  }
+
+  &__photo {
+    // Set box sizing is set to border-box in * {} so set to content-box here
+    // to avoid the border from pushing in the image and making it smaller
+    box-sizing: content-box;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    border: 3px solid $color-white;
+
+    &:not(:first-child) {
+      margin-left: -1.5rem;
+    }
+  }
+}
+
+.review {
+  position: relative;
+  background-color: $color-grey-light-1;
+  padding: 1rem;
+  box-shadow: $shadow-light;
+  overflow: hidden;
+
+  // The course had a single pair of quotes appearing in the top left corner of the
+  // review box. Opted instead to add the quotes before & after the review__text
+  // element below
+  // &::before {
+  //   content: "\201C";
+  //   position: absolute;
+  //   top: -3rem;
+  //   left: -1rem;
+  //   font-size: 20rem;
+  //   font-family: sans-serif;
+  //   color: $color-grey-light-3;
+  //   line-height: 1;
+  // }
+
+  &__text {
+    position: relative;
+    z-index: 0;
+
+    &::before,
+    &::after {
+      position: absolute;
+      // Tried using z-index of 2 on review__text and 1 on before/after but didn't work.
+      // Using a negative z-index here worked instead
+      z-index: -1;
+      font-family: sans-serif;
+      color: $color-grey-light-4;
+      opacity: 0.5;
+      font-size: 15rem;
+      line-height: 0;
+    }
+
+    &::before {
+      top: 6rem;
+      left: -1rem;
+      content: '\201C';
+    }
+
+    &::after {
+      bottom: -2rem;
+      right: -1rem;
+      content: '\201D';
+    }
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  & > * {
+    margin: 0.5rem;
+  }
+
+  &__user {
+    background-color: $color-grey-light-3;
+    border-top-left-radius: 10rem;
+    border-bottom-left-radius: 10rem;
+
+    & > * {
+      padding: 0.5rem;
+    }
+
+    display: flex;
+    align-items: center;
+  }
+
+  &__text {
+    margin-bottom: 1rem;
+  }
+
+  &__photo {
+    box-sizing: content-box;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 100rem;
+
+    // For IE - add a transparent border for the round corners to work
+    border: 1px solid transparent;
+  }
+
+  &__user-box {
+    flex: 1;
+    //OR... margin-right: auto;
+  }
+
+  &__user-name {
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  &__user-date {
+    font-size: 1rem;
+    color: $color-grey-dark-3;
+  }
+
+  &__rating {
+    color: $color-white;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    background-color: $color-primary;
+    font-size: 1.8rem;
+    padding: 1rem;
+    font-weight: 300;
+  }
+}
+
+.cta {
+  padding: 3.5rem 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 300;
+
+  & > * {
+    font-size: inherit;
+    font-weight: inherit;
+    text-transform: uppercase;
+  }
+
+  &__book-now {
+    margin-bottom: 2.5rem;
+  }
+}
+
+.btn-drop-in {
+  position: relative;
+  overflow: hidden;
+  font-size: inherit;
+  font-weight: inherit;
+  border: none;
+  border-radius: 10rem;
+  color: $color-white;
+  cursor: pointer;
+  background-image: linear-gradient(
+    to right,
+    $color-primary,
+    $color-primary-dark
+  );
+
+  &:focus {
+    outline: none;
+  }
+
+  & > * {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    transition: all 0.2s;
+    padding: 2rem;
+  }
+
+  &__visible {
+    display: inline-block;
+    padding-left: 7.5rem;
+    padding-right: 7.5rem;
+  }
+
+  &__invisible {
+    position: absolute;
+    left: 0;
+    top: -100%;
+  }
+
+  &:hover {
+    background-image: linear-gradient(
+      to left,
+      $color-primary,
+      $color-primary-dark
+    );
+    animation: pulsate 1s infinite;
+  }
+
+  &:hover &__visible {
+    transform: translateY(100%);
+  }
+
+  &:hover &__invisible {
+    top: 0;
+  }
+}
+
