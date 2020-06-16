@@ -233,6 +233,7 @@
     padding: .5rem 1rem;
     position: relative;
     transition: all .3s;
+    transform-origin: top left;
     transform: scaleY(0);
     white-space: nowrap;
     z-index: 100;
